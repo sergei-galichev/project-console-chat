@@ -8,6 +8,7 @@ package chat_v1
 
 import (
 	context "context"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -23,8 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatV1Client interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
-	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
-	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
 type chatV1Client struct {
@@ -44,8 +45,8 @@ func (c *chatV1Client) Create(ctx context.Context, in *CreateRequest, opts ...gr
 	return out, nil
 }
 
-func (c *chatV1Client) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
-	out := new(DeleteResponse)
+func (c *chatV1Client) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/chat_v1.ChatV1/Delete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -53,8 +54,8 @@ func (c *chatV1Client) Delete(ctx context.Context, in *DeleteRequest, opts ...gr
 	return out, nil
 }
 
-func (c *chatV1Client) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error) {
-	out := new(SendMessageResponse)
+func (c *chatV1Client) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/chat_v1.ChatV1/SendMessage", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -67,8 +68,8 @@ func (c *chatV1Client) SendMessage(ctx context.Context, in *SendMessageRequest, 
 // for forward compatibility
 type ChatV1Server interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
-	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
-	SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error)
+	Delete(context.Context, *DeleteRequest) (*empty.Empty, error)
+	SendMessage(context.Context, *SendMessageRequest) (*empty.Empty, error)
 	mustEmbedUnimplementedChatV1Server()
 }
 
@@ -79,10 +80,10 @@ type UnimplementedChatV1Server struct {
 func (UnimplementedChatV1Server) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedChatV1Server) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+func (UnimplementedChatV1Server) Delete(context.Context, *DeleteRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedChatV1Server) SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error) {
+func (UnimplementedChatV1Server) SendMessage(context.Context, *SendMessageRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
 }
 func (UnimplementedChatV1Server) mustEmbedUnimplementedChatV1Server() {}
