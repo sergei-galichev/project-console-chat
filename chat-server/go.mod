@@ -3,7 +3,9 @@ module chat-server
 go 1.21.3
 
 require (
+	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/golang/protobuf v1.5.3
+	github.com/joho/godotenv v1.5.1
 	google.golang.org/grpc v1.60.1
 	google.golang.org/protobuf v1.32.0
 )
