@@ -1,19 +1,20 @@
 package main
 
 import (
-	"auth/internal/config"
-	"auth/internal/config/env"
-	user_pb "auth/pkg/user_v1"
 	"context"
-
 	"log"
 	"net"
+
+	"auth/internal/config"
+	"auth/internal/config/env"
 
 	"github.com/brianvoe/gofakeit"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	user_pb "auth/pkg/user_v1"
 )
 
 func init() {
