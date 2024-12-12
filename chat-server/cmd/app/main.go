@@ -1,42 +1,44 @@
 package main
 
 import (
-	"chat-server/internal/config"
-	"chat-server/internal/config/env"
-	chat_pb "chat-server/pkg/chat_v1"
 	"context"
 	"log"
 	"net"
+
+	"github.com/sergei-galichev/project-console-chat/chat-server/internal/config"
+	"github.com/sergei-galichev/project-console-chat/chat-server/internal/config/env"
 
 	"github.com/brianvoe/gofakeit"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+
+	pb "github.com/sergei-galichev/project-console-chat/chat-server/pkg/chat_v1"
 )
 
 func init() {
-	if err := config.LoadConfig(".env"); err != nil {
+	if err := config.LoadConfig("config/local.env"); err != nil {
 		panic("Error loading .env file")
 	}
 }
 
 type server struct {
-	chat_pb.UnimplementedChatV1Server
+	pb.UnimplementedChatV1Server
 }
 
-func (s *server) Create(ctx context.Context, req *chat_pb.CreateRequest) (*chat_pb.CreateResponse, error) {
+func (s *server) Create(ctx context.Context, req *pb.CreateRequest) (*pb.CreateResponse, error) {
 	_, _ = ctx, req
-	return &chat_pb.CreateResponse{
+	return &pb.CreateResponse{
 		Id: gofakeit.Int64(),
 	}, nil
 }
 
-func (s *server) Delete(ctx context.Context, req *chat_pb.DeleteRequest) (*empty.Empty, error) {
+func (s *server) Delete(ctx context.Context, req *pb.DeleteRequest) (*empty.Empty, error) {
 	_, _ = ctx, req
 	return &empty.Empty{}, nil
 }
 
-func (s *server) SendMessage(ctx context.Context, req *chat_pb.SendMessageRequest) (*empty.Empty, error) {
+func (s *server) SendMessage(ctx context.Context, req *pb.SendMessageRequest) (*empty.Empty, error) {
 	_, _ = ctx, req
 	return &empty.Empty{}, nil
 }
@@ -53,8 +55,10 @@ func main() {
 	}
 
 	s := grpc.NewServer()
+
 	reflection.Register(s)
-	chat_pb.RegisterChatV1Server(s, &server{})
+
+	pb.RegisterChatV1Server(s, &server{})
 
 	log.Println("starting chat server on address: ", grpcCfg.Address())
 

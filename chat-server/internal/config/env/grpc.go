@@ -1,10 +1,11 @@
 package env
 
 import (
-	"chat-server/internal/config"
 	"errors"
 	"net"
 	"os"
+
+	"github.com/sergei-galichev/project-console-chat/chat-server/internal/config"
 )
 
 const (
