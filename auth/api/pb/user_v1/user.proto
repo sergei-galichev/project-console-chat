@@ -20,19 +20,6 @@ enum Role {
   ADMIN = 1;
 }
 
-message User {
-  int64 id = 1;
-  UserInfo info = 2;
-}
-
-message UserInfo {
-  string name = 1;
-  string email = 2;
-  Role role = 3;
-  google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp updated_at = 5;
-}
-
 message CreateRequest {
   string name = 1;
   string email = 2;
@@ -50,7 +37,12 @@ message GetRequest {
 }
 
 message GetResponse {
-  User user = 1;
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+  Role role = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
 }
 
 message UpdateRequest {

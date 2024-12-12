@@ -1,8 +1,8 @@
 package env
 
 import (
-	"auth/internal/config"
-	"errors"
+	"github.com/sergei-galichev/project-console-chat/auth/internal/config"
+	"log/slog"
 	"net"
 	"os"
 )
@@ -10,6 +10,9 @@ import (
 const (
 	grpcHostEnvName = "GRPC_HOST"
 	grpcPortEnvName = "GRPC_PORT"
+
+	grpcHostDefault = "localhost"
+	grpcPortDefault = "50051"
 )
 
 type grpcConfig struct {
@@ -18,21 +21,25 @@ type grpcConfig struct {
 }
 
 // NewGRPCConfig returns gRPC config
-func NewGRPCConfig() (config.GRPCConfig, error) {
+func NewGRPCConfig() config.GRPCConfig {
 	host := os.Getenv(grpcHostEnvName)
 	if len(host) == 0 {
-		return nil, errors.New("grpc host not found")
+		slog.Info("env 'GRPC_HOST' not found. used default")
+
+		host = grpcHostDefault
 	}
 
 	port := os.Getenv(grpcPortEnvName)
 	if len(port) == 0 {
-		return nil, errors.New("grpc port not found")
+		slog.Info("env 'GRPC_PORT' not found. used default")
+
+		port = grpcPortDefault
 	}
 
 	return &grpcConfig{
 		host: host,
 		port: port,
-	}, nil
+	}
 }
 
 func (cfg *grpcConfig) Address() string {
